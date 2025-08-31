@@ -140,17 +140,17 @@ window.onload = function() {
     }
   });
 
-  /* ===== Harry Potter Character Orbit Carousel ===== */
-  const orbit = document.querySelector(".orbit");
-  const cards = document.querySelectorAll(".character-card");
-  const radius = 120; // orbit distance from center
+  /* ===== Harry Potter Horizontal Carousel ===== */
+  const track = document.querySelector(".carousel-track");
+  const prevBtn = document.querySelector(".prev");
+  const nextBtn = document.querySelector(".next");
+  const cardWidth = track.querySelector(".character-card").offsetWidth + 20; // card + gap
 
-  cards.forEach((card, i) => {
-    const angle = (i / cards.length) * 2 * Math.PI;
-    const x = radius * Math.cos(angle);
-    const y = radius * Math.sin(angle);
-    card.style.left = `${x}px`;
-    card.style.top = `${y}px`;
+  prevBtn.addEventListener("click", ()=>{
+    track.scrollBy({ left: -cardWidth, behavior: "smooth" });
+  });
+  nextBtn.addEventListener("click", ()=>{
+    track.scrollBy({ left: cardWidth, behavior: "smooth" });
   });
 
 };
