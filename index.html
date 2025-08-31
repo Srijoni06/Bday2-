@@ -1,95 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy 19 ✨</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hogwarts World</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header>
+    <h1>🪄 Hogwarts World</h1>
+  </header>
 
-<audio id="bg-music" loop>
-  <source src="song.mp3" type="audio/mpeg">
-</audio>
+  <section class="characters-section">
+    <div class="carousel-container">
+      <!-- Left Button -->
+      <button class="carousel-btn prev">←</button>
 
-<canvas id="backgroundCanvas"></canvas>
-<div class="hats"></div>
+      <!-- Track of Cards -->
+      <div class="carousel-track">
+        <div class="character-card">
+          <img src="harry.jpg" alt="Harry Potter">
+          <p>Harry Potter</p>
+        </div>
+        <div class="character-card">
+          <img src="hermione.jpg" alt="Hermione Granger">
+          <p>Hermione Granger</p>
+        </div>
+        <div class="character-card">
+          <img src="ron.jpg" alt="Ron Weasley">
+          <p>Ron Weasley</p>
+        </div>
+        <div class="character-card">
+          <img src="dumbledore.jpg" alt="Albus Dumbledore">
+          <p>Dumbledore</p>
+        </div>
+        <div class="character-card">
+          <img src="voldemort.jpg" alt="Voldemort">
+          <p>Voldemort</p>
+        </div>
+      </div>
 
-<div class="main-container">
-  <h1 class="hogwarts-title">Happiest 19 BBG 🪄</h1>
-  <p class="note">A magical year begins! 💫</p>
-  <p class="bday-note">I’m so grateful to have you in my life. To more teas together 💖</p>
-</div>
-
-<section class="cake-section">
-  <h2 class="section-title">🎂 Birthday Cake</h2>
-  <div class="cake-container">
-    <div class="cake">
-      <div class="candle" id="candle"></div>
-      <div class="cake-top"></div>
-      <div class="cake-body" id="cakeBody"></div>
+      <!-- Right Button -->
+      <button class="carousel-btn next">→</button>
     </div>
-  </div>
-  <p class="note">Blow out the candle and tap your cake to cut! 🎉</p>
-</section>
+  </section>
 
-<section class="memories">
-  <h2 class="section-title">📸 Memories</h2>
-  <div class="gallery">
-    <div class="photo-frame"><img src="pic1.jpg" alt="Memory 1"></div>
-    <div class="photo-frame"><img src="pic2.jpg" alt="Memory 2"></div>
-    <div class="photo-frame"><img src="pic3.jpg" alt="Memory 3"></div>
-    <div class="photo-frame"><img src="pic4.jpg" alt="Memory 4"></div>
-  </div>
-</section>
-
-<!-- New Harry Potter Character Orbit Section -->
-<section class="characters-section">
-  <h2 class="section-title">🧙‍♂️ Hogwart's World</h2>
-  <div class="carousel-container">
-    <button class="prev">&#8592;</button>
-    <div class="carousel-track">
-      <div class="character-card"><img src="harry.jpg" alt="Harry Potter"><p>Harry</p></div>
-      <div class="character-card"><img src="hermione.jpg" alt="Hermione"><p>Hermione</p></div>
-      <div class="character-card"><img src="ron.jpg" alt="Ron"><p>Ron</p></div>
-      <div class="character-card"><img src="dumbledore.jpg" alt="Dumbledore"><p>Dumbledore</p></div>
-      <div class="character-card"><img src="voldemort.jpg" alt="Voldemort"><p>Voldemort</p></div>
-      <!-- add more cards if needed -->
-    </div>
-    <button class="next">&#8594;</button>
-  </div>
-</section>
-
-
-<section class="game-section">
-  <h2 class="section-title">🧙 Wizard’s Game</h2>
-  <canvas id="wizardGame" width="600" height="400"></canvas>
-  <p class="note">Move with ⬅️ ➡️ and catch the stars ⭐</p>
-</section>
-
-<div id="popup" class="popup">
-  <div class="popup-content">
-    <span class="close">&times;</span>
-    <h2>🎉 Surprise 🎉</h2>
-    <p>You’re officially 19, step into the wizarding world ✨🪄</p>
-  </div>
-</div>
-
-<script src="script.js"></script>
-<script>
-  // JS to position the character cards in a circular orbit
-  const orbit = document.querySelector(".orbit");
-  const cards = document.querySelectorAll(".character-card");
-  const radius = 120; // distance from center
-
-  cards.forEach((card, i) => {
-    const angle = (i / cards.length) * 2 * Math.PI;
-    const x = radius * Math.cos(angle);
-    const y = radius * Math.sin(angle);
-    card.style.left = `${x}px`;
-    card.style.top = `${y}px`;
-  });
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
