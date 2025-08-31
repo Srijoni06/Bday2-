@@ -19,33 +19,54 @@ window.onload = function() {
   // Wizard Game
   const canvas = document.getElementById("wizardGame");
   const ctx = canvas.getContext("2d");
-  let wizard = { x:270,y:350,width:60,height:40,color:"#7f00ff" }, stars=[], score=0;
+  let wizard = { x:270,y:350,width:60,height:40,color:"#7f00ff" }, starsGame=[], score=0;
   function drawWizard(){ ctx.fillStyle=wizard.color; ctx.fillRect(wizard.x,wizard.y,wizard.width,wizard.height); }
-  function drawStars(){ ctx.fillStyle="#f5c518"; stars.forEach(s=>ctx.fillRect(s.x,s.y,15,15)); }
-  function updateStars(){ stars.forEach(s=>s.y+=2); stars=stars.filter(s=>s.y<canvas.height); }
-  function checkCollision(){ stars.forEach((s,i)=>{ if(s.x<wizard.x+wizard.width&&s.x+15>wizard.x&&s.y<wizard.y+wizard.height&&s.y+15>wizard.y){ stars.splice(i,1); score++; } }); }
+  function drawStars(){ ctx.fillStyle="#f5c518"; starsGame.forEach(s=>ctx.fillRect(s.x,s.y,15,15)); }
+  function updateStars(){ starsGame.forEach(s=>s.y+=2); starsGame=starsGame.filter(s=>s.y<canvas.height); }
+  function checkCollision(){ starsGame.forEach((s,i)=>{ if(s.x<wizard.x+wizard.width&&s.x+15>wizard.x&&s.y<wizard.y+wizard.height&&s.y+15>wizard.y){ starsGame.splice(i,1); score++; } }); }
   function drawScore(){ ctx.fillStyle="#fff"; ctx.font="16px Arial"; ctx.fillText("Score: "+score,10,20); }
   function gameLoop(){ ctx.clearRect(0,0,canvas.width,canvas.height); drawWizard(); drawStars(); drawScore(); updateStars(); checkCollision(); requestAnimationFrame(gameLoop); }
-  setInterval(()=>stars.push({ x:Math.random()*(canvas.width-15), y:0 }), 1500);
+  setInterval(()=>starsGame.push({ x:Math.random()*(canvas.width-15), y:0 }), 1500);
   document.addEventListener("keydown", e=>{ if(e.key==="ArrowLeft"&&wizard.x>0)wizard.x-=20; if(e.key==="ArrowRight"&&wizard.x+wizard.width<canvas.width)wizard.x+=20; });
   gameLoop();
 
   // Starry Background Canvas
   const bgCanvas = document.getElementById("backgroundCanvas");
   const bgCtx = bgCanvas.getContext("2d");
-  bgCanvas.width = window.innerWidth; bgCanvas.height = window.innerHeight;
-  let starsBG=[];
-  for(let i=0;i<150;i++) starsBG.push({x:Math.random()*bgCanvas.width, y:Math.random()*bgCanvas.height, size:Math.random()*2, speed:Math.random()*0.5+0.1});
-  function drawBG(){
-    bgCtx.fillStyle="#000"; bgCtx.fillRect(0,0,bgCanvas.width,bgCanvas.height);
-    bgCtx.fillStyle="#fff";
-    starsBG.forEach(s=>{
-      bgCtx.globalAlpha=Math.random()*0.8+0.2;
-      bgCtx.fillRect(s.x,s.y,s.size,s.size);
-      s.y+=s.speed;
-      if(s.y>bgCanvas.height) s.y=0;
+  bgCanvas.width = window.innerWidth;
+  bgCanvas.height = window.innerHeight;
+
+  let starsBG = [];
+  const colors = ["white", "#fffa90", "#9cf", "#f99"]; // white/yellow/blue/red stars
+  for(let i=0;i<250;i++){
+    starsBG.push({
+      x: Math.random()*bgCanvas.width,
+      y: Math.random()*bgCanvas.height,
+      radius: Math.random()*1.5+0.5,
+      speed: Math.random()*0.2+0.05,
+      color: colors[Math.floor(Math.random()*colors.length)]
     });
-    bgCtx.globalAlpha=1;
+  }
+
+  function drawBG(){
+    bgCtx.fillStyle = "black";
+    bgCtx.fillRect(0,0,bgCanvas.width,bgCanvas.height);
+
+    starsBG.forEach(star=>{
+      bgCtx.beginPath();
+      bgCtx.arc(star.x, star.y, star.radius, 0, Math.PI*2);
+      bgCtx.fillStyle = star.color;
+      bgCtx.globalAlpha = Math.random()*0.8 + 0.2; // twinkle effect
+      bgCtx.fill();
+      bgCtx.closePath();
+
+      star.y += star.speed;
+      if(star.y > bgCanvas.height){
+        star.y = 0;
+        star.x = Math.random()*bgCanvas.width;
+      }
+    });
+    bgCtx.globalAlpha = 1;
     requestAnimationFrame(drawBG);
   }
   drawBG();
@@ -69,9 +90,7 @@ window.onload = function() {
   const cakeBody = document.getElementById("cakeBody");
 
   // Blow candle
-  candle.addEventListener("click", ()=>{
-    candle.classList.add("blowed");
-  });
+  candle.addEventListener("click", ()=>{ candle.classList.add("blowed"); });
 
   // Cut cake on click
   cakeBody.addEventListener("click", ()=>{
@@ -89,4 +108,5 @@ window.onload = function() {
       setTimeout(()=>sparkle.remove(), 800);
     }
   });
+
 };
