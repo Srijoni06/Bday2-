@@ -114,5 +114,16 @@ window.onload = function() {
       setTimeout(()=>sparkle.remove(), 800);
     }
   });
+const carousel = document.querySelector(".characters-carousel");
+let scrollAmount = 0;
+
+function scrollCarousel() {
+  scrollAmount += 1; // adjust speed here
+  if(scrollAmount > carousel.scrollWidth/2) scrollAmount = 0;
+  carousel.style.transform = `translateX(-${scrollAmount}px)`;
+  requestAnimationFrame(scrollCarousel);
+}
+
+scrollCarousel();
 
 };
