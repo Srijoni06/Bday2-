@@ -30,46 +30,54 @@ window.onload = function() {
   document.addEventListener("keydown", e=>{ if(e.key==="ArrowLeft"&&wizard.x>0)wizard.x-=20; if(e.key==="ArrowRight"&&wizard.x+wizard.width<canvas.width)wizard.x+=20; });
   gameLoop();
 
-  // Starry Background Canvas
-  const bgCanvas = document.getElementById("backgroundCanvas");
-  const bgCtx = bgCanvas.getContext("2d");
+// Starry Background Canvas
+const bgCanvas = document.getElementById("backgroundCanvas");
+const bgCtx = bgCanvas.getContext("2d");
+
+function resizeCanvas() {
   bgCanvas.width = window.innerWidth;
   bgCanvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
-  let starsBG = [];
-  const colors = ["white", "#fffa90", "#9cf", "#f99"]; // white/yellow/blue/red stars
-  for(let i=0;i<250;i++){
-    starsBG.push({
-      x: Math.random()*bgCanvas.width,
-      y: Math.random()*bgCanvas.height,
-      radius: Math.random()*1.5+0.5,
-      speed: Math.random()*0.2+0.05,
-      color: colors[Math.floor(Math.random()*colors.length)]
-    });
-  }
+let stars = [];
+const colors = ["white","#fffa90","#9cf","#f99"];
+for(let i=0;i<300;i++){
+  stars.push({
+    x: Math.random()*bgCanvas.width,
+    y: Math.random()*bgCanvas.height,
+    r: Math.random()*1.5+0.5,
+    color: colors[Math.floor(Math.random()*colors.length)],
+    speed: Math.random()*0.2+0.05
+  });
+}
 
-  function drawBG(){
-    bgCtx.fillStyle = "black";
-    bgCtx.fillRect(0,0,bgCanvas.width,bgCanvas.height);
+function drawStars(){
+  bgCtx.fillStyle = "black";
+  bgCtx.fillRect(0,0,bgCanvas.width,bgCanvas.height);
 
-    starsBG.forEach(star=>{
-      bgCtx.beginPath();
-      bgCtx.arc(star.x, star.y, star.radius, 0, Math.PI*2);
-      bgCtx.fillStyle = star.color;
-      bgCtx.globalAlpha = Math.random()*0.8 + 0.2; // twinkle effect
-      bgCtx.fill();
-      bgCtx.closePath();
+  stars.forEach(star => {
+    bgCtx.beginPath();
+    bgCtx.arc(star.x, star.y, star.r, 0, Math.PI*2);
+    bgCtx.fillStyle = star.color;
+    bgCtx.globalAlpha = Math.random(); // twinkle effect
+    bgCtx.fill();
+    bgCtx.closePath();
 
-      star.y += star.speed;
-      if(star.y > bgCanvas.height){
-        star.y = 0;
-        star.x = Math.random()*bgCanvas.width;
-      }
-    });
-    bgCtx.globalAlpha = 1;
-    requestAnimationFrame(drawBG);
-  }
-  drawBG();
+    star.y += star.speed;
+    if(star.y > bgCanvas.height){
+      star.y = 0;
+      star.x = Math.random()*bgCanvas.width;
+    }
+  });
+
+  bgCtx.globalAlpha = 1;
+  requestAnimationFrame(drawStars);
+}
+
+drawStars();
+
 
   // Hats floating
   const hatsContainer = document.querySelector(".hats");
