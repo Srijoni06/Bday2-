@@ -142,15 +142,35 @@ window.onload = function() {
 
   /* ===== Harry Potter Horizontal Carousel ===== */
   const track = document.querySelector(".carousel-track");
-  const prevBtn = document.querySelector(".prev");
-  const nextBtn = document.querySelector(".next");
-  const cardWidth = track.querySelector(".character-card").offsetWidth + 20; // card + gap
+const prevBtn = document.querySelector(".prev");
+const nextBtn = document.querySelector(".next");
+const cards = track.querySelectorAll(".character-card");
 
-  prevBtn.addEventListener("click", ()=>{
-    track.scrollBy({ left: -cardWidth, behavior: "smooth" });
-  });
-  nextBtn.addEventListener("click", ()=>{
-    track.scrollBy({ left: cardWidth, behavior: "smooth" });
-  });
+// Keep track of which card is visible
+let currentIndex = 0;
+
+// Function to move carousel
+function updateCarousel() {
+  const cardWidth = cards[0].offsetWidth; // get width of one card
+  track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+}
+
+// Event listeners for arrows
+prevBtn.addEventListener("click", () => {
+  if (currentIndex > 0) {
+    currentIndex--;
+    updateCarousel();
+  }
+});
+
+nextBtn.addEventListener("click", () => {
+  if (currentIndex < cards.length - 1) {
+    currentIndex++;
+    updateCarousel();
+  }
+});
+
+// Initialize position
+updateCarousel();
 
 };
