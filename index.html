@@ -12,7 +12,6 @@
   <source src="song.mp3" type="audio/mpeg">
 </audio>
 
-<div class="stars"></div>
 <canvas id="backgroundCanvas"></canvas>
 <div class="hats"></div>
 
@@ -44,33 +43,20 @@
   </div>
 </section>
 
-  <section class="characters-section">
+<!-- New Harry Potter Character Orbit Section -->
+<section class="characters-section">
   <h2 class="section-title">🧙‍♂️ Harry Potter Characters</h2>
-  <div class="characters-carousel">
-    <div class="character-card">
-      <img src="harry.jpg" alt="Harry Potter">
-      <p>Harry Potter</p>
+  <div class="orbit-container">
+    <div class="orbit">
+      <div class="character-card"><img src="harry.jpg" alt="Harry Potter"><p>Harry</p></div>
+      <div class="character-card"><img src="hermione.jpg" alt="Hermione"><p>Hermione</p></div>
+      <div class="character-card"><img src="ron.jpg" alt="Ron"><p>Ron</p></div>
+      <div class="character-card"><img src="dumbledore.jpg" alt="Dumbledore"><p>Dumbledore</p></div>
+      <div class="character-card"><img src="voldemort.jpg" alt="Voldemort"><p>Voldemort</p></div>
+      <!-- Add more cards as needed -->
     </div>
-    <div class="character-card">
-      <img src="hermione.jpg" alt="Hermione Granger">
-      <p>Hermione Granger</p>
-    </div>
-    <div class="character-card">
-      <img src="ron.jpg" alt="Ron Weasley">
-      <p>Ron Weasley</p>
-    </div>
-    <div class="character-card">
-      <img src="dumbledore.jpg" alt="Albus Dumbledore">
-      <p>Albus Dumbledore</p>
-    </div>
-    <div class="character-card">
-      <img src="voldemort.jpg" alt="Voldemort">
-      <p>Voldemort</p>
-    </div>
-    <!-- Add more cards as you like -->
   </div>
 </section>
-
 
 <section class="game-section">
   <h2 class="section-title">🧙 Wizard’s Game</h2>
@@ -87,5 +73,20 @@
 </div>
 
 <script src="script.js"></script>
+<script>
+  // JS to position the character cards in a circular orbit
+  const orbit = document.querySelector(".orbit");
+  const cards = document.querySelectorAll(".character-card");
+  const radius = 120; // distance from center
+
+  cards.forEach((card, i) => {
+    const angle = (i / cards.length) * 2 * Math.PI;
+    const x = radius * Math.cos(angle);
+    const y = radius * Math.sin(angle);
+    card.style.left = `${x}px`;
+    card.style.top = `${y}px`;
+  });
+</script>
+
 </body>
 </html>
