@@ -1,5 +1,6 @@
 window.onload = function() {
-  // Background Music
+
+  /* ===== Background Music ===== */
   const bgMusic = document.getElementById("bg-music");
   function playMusic() {
     bgMusic.play().catch(()=>{});
@@ -9,29 +10,52 @@ window.onload = function() {
   document.addEventListener("click", playMusic);
   document.addEventListener("keydown", playMusic);
 
-  // Popup
+  /* ===== Popup ===== */
   let popup = document.getElementById("popup");
   let span = document.getElementsByClassName("close")[0];
   setTimeout(() => popup.classList.add("show"), 2000);
   span.onclick = function() { popup.classList.remove("show"); setTimeout(()=>popup.style.display="none",500); };
-  document.addEventListener("keydown", e => { if(e.key==="Enter"){ popup.classList.remove("show"); setTimeout(()=>popup.style.display="none",500); } });
+  document.addEventListener("keydown", e => { 
+    if(e.key==="Enter"){ 
+      popup.classList.remove("show"); 
+      setTimeout(()=>popup.style.display="none",500); 
+    } 
+  });
 
-  // Wizard Game
+  /* ===== Wizard Game ===== */
   const canvas = document.getElementById("wizardGame");
   const ctx = canvas.getContext("2d");
   let wizard = { x:270,y:350,width:60,height:40,color:"#7f00ff" }, starsGame=[], score=0;
-
+  
   function drawWizard(){ ctx.fillStyle=wizard.color; ctx.fillRect(wizard.x,wizard.y,wizard.width,wizard.height); }
-  function drawStarsGame(){ ctx.fillStyle="#f5c518"; starsGame.forEach(s=>ctx.fillRect(s.x,s.y,15,15)); }
+  function drawStars(){ ctx.fillStyle="#f5c518"; starsGame.forEach(s=>ctx.fillRect(s.x,s.y,15,15)); }
   function updateStars(){ starsGame.forEach(s=>s.y+=2); starsGame=starsGame.filter(s=>s.y<canvas.height); }
-  function checkCollision(){ starsGame.forEach((s,i)=>{ if(s.x<wizard.x+wizard.width&&s.x+15>wizard.x&&s.y<wizard.y+wizard.height&&s.y+15>wizard.y){ starsGame.splice(i,1); score++; } }); }
+  function checkCollision(){ 
+    starsGame.forEach((s,i)=>{ 
+      if(s.x<wizard.x+wizard.width && s.x+15>wizard.x && s.y<wizard.y+wizard.height && s.y+15>wizard.y){ 
+        starsGame.splice(i,1); 
+        score++; 
+      } 
+    }); 
+  }
   function drawScore(){ ctx.fillStyle="#fff"; ctx.font="16px Arial"; ctx.fillText("Score: "+score,10,20); }
-  function gameLoop(){ ctx.clearRect(0,0,canvas.width,canvas.height); drawWizard(); drawStarsGame(); drawScore(); updateStars(); checkCollision(); requestAnimationFrame(gameLoop); }
+  function gameLoop(){ 
+    ctx.clearRect(0,0,canvas.width,canvas.height); 
+    drawWizard(); 
+    drawStars(); 
+    drawScore(); 
+    updateStars(); 
+    checkCollision(); 
+    requestAnimationFrame(gameLoop); 
+  }
   setInterval(()=>starsGame.push({ x:Math.random()*(canvas.width-15), y:0 }), 1500);
-  document.addEventListener("keydown", e=>{ if(e.key==="ArrowLeft"&&wizard.x>0)wizard.x-=20; if(e.key==="ArrowRight"&&wizard.x+wizard.width<canvas.width)wizard.x+=20; });
+  document.addEventListener("keydown", e=>{ 
+    if(e.key==="ArrowLeft"&&wizard.x>0)wizard.x-=20; 
+    if(e.key==="ArrowRight"&&wizard.x+wizard.width<canvas.width)wizard.x+=20; 
+  });
   gameLoop();
 
-  // Starry Background Canvas
+  /* ===== Starry Background Canvas ===== */
   const bgCanvas = document.getElementById("backgroundCanvas");
   const bgCtx = bgCanvas.getContext("2d");
 
@@ -54,7 +78,7 @@ window.onload = function() {
     });
   }
 
-  function drawBackgroundStars(){
+  function drawStarField(){
     bgCtx.fillStyle = "black";
     bgCtx.fillRect(0,0,bgCanvas.width,bgCanvas.height);
 
@@ -62,7 +86,7 @@ window.onload = function() {
       bgCtx.beginPath();
       bgCtx.arc(star.x, star.y, star.r, 0, Math.PI*2);
       bgCtx.fillStyle = star.color;
-      bgCtx.globalAlpha = Math.random(); // twinkle
+      bgCtx.globalAlpha = Math.random();
       bgCtx.fill();
       bgCtx.closePath();
 
@@ -74,12 +98,11 @@ window.onload = function() {
     });
 
     bgCtx.globalAlpha = 1;
-    requestAnimationFrame(drawBackgroundStars);
+    requestAnimationFrame(drawStarField);
   }
+  drawStarField();
 
-  drawBackgroundStars();
-
-  // Hats floating
+  /* ===== Hats floating ===== */
   const hatsContainer = document.querySelector(".hats");
   function createHat(){
     const hat = document.createElement("div");
@@ -93,12 +116,14 @@ window.onload = function() {
   }
   setInterval(createHat, 600);
 
-  // Birthday Cake Feature
+  /* ===== Birthday Cake Feature ===== */
   const candle = document.getElementById("candle");
   const cakeBody = document.getElementById("cakeBody");
 
+  // Blow candle
   candle.addEventListener("click", ()=>{ candle.classList.add("blowed"); });
 
+  // Cut cake on click
   cakeBody.addEventListener("click", ()=>{
     cakeBody.style.background = "#e07b5a";
     for(let i=0;i<15;i++){
@@ -114,16 +139,18 @@ window.onload = function() {
       setTimeout(()=>sparkle.remove(), 800);
     }
   });
-const carousel = document.querySelector(".characters-carousel");
-let scrollAmount = 0;
 
-function scrollCarousel() {
-  scrollAmount += 1; // adjust speed here
-  if(scrollAmount > carousel.scrollWidth/2) scrollAmount = 0;
-  carousel.style.transform = `translateX(-${scrollAmount}px)`;
-  requestAnimationFrame(scrollCarousel);
-}
+  /* ===== Harry Potter Character Orbit Carousel ===== */
+  const orbit = document.querySelector(".orbit");
+  const cards = document.querySelectorAll(".character-card");
+  const radius = 120; // orbit distance from center
 
-scrollCarousel();
+  cards.forEach((card, i) => {
+    const angle = (i / cards.length) * 2 * Math.PI;
+    const x = radius * Math.cos(angle);
+    const y = radius * Math.sin(angle);
+    card.style.left = `${x}px`;
+    card.style.top = `${y}px`;
+  });
 
 };
